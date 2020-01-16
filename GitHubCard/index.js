@@ -2,7 +2,13 @@
            (replacing the palceholder with your Github name):
            https://api.github.com/users/<your name>
 */
-
+axios.get('https://api.github.com/users/tdefriess')
+.then(response => {
+  console.log(response);
+})
+.catch( error => {
+  console.log('The data was not returned', error);
+})
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -53,3 +59,33 @@ const followersArray = [];
   luishrd
   bigknell
 */
+
+function newCard(gitObject){
+  const card = document.createElement('div'),
+    userIMG = document.createElement('img'),
+    cardInfo = document.createElement('div'),
+    realName =document.createElement('h3'),
+    userName = document.createElement('p'),
+    location = document.createElement('p'),
+    profile = document.createElement('p'),
+    link = document.createElement('a'),
+    followers = document.createElement('p'),
+    following = document.createElement('p'),
+    bio = document.createElement('p');
+
+  card.classList.add('card');
+  cardInfo.classList.add('card-info');
+  realName.classList.add('name');
+  userName.classList.add('username');
+
+  userIMG.src = gitObject.data.avatar_url;
+  realName.textContent = gitObject.data.name;
+  userName.textContent = gitObject.data.login;
+  location.textContent = `Location: ${gitObject.data.location}`;
+  profile.textContent = 'Profile: ';
+  link.textContent = gitObject.data.html_url;
+  link.src = gitObject.data.html_url;
+  followers.textContent = gitObject.data.followers;
+  following.textContent = gitObject.data.following;
+  bio.textContent = gitObject.data.bio;
+}
