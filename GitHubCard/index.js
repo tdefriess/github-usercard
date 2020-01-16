@@ -7,7 +7,7 @@ const entry = document.querySelector('.cards');
 axios.get('https://api.github.com/users/tdefriess')
 .then(response => {
   console.log(response);
-  entry.append(newCard(response));
+  entry.append(newCard(response));  
 })
 .catch( error => {
   console.log('The data was not returned', error);
@@ -33,7 +33,49 @@ axios.get('https://api.github.com/users/tdefriess')
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+let followersArray = [];
+
+followersArray = axios.get('https://api.github.com/users/tdefriess/followers')
+.then(response => {
+  console.log(response);
+  let follows = [];
+  response.data.forEach(el => {
+    follows.push(el.login);    
+    return follows;
+  })
+  console.log(follows);
+  followersArray = follows;
+  console.log(followersArray);
+  followersArray.forEach(el => {
+    console.log(el);
+    axios.get(`https://api.github.com/users/${el}`)
+    .then(response => {
+      console.log(response);
+      entry.append(newCard(response));
+    })
+    .catch( error => {
+      console.log('The data was not returned', error);
+    })
+  })
+  return follows;
+})
+.catch( error => {
+  console.log('The data was not returned', error);
+})
+
+console.log(followersArray, 'Followers')
+
+// followersArray.forEach(el => {
+//   console.log(el);
+//   axios.get(`https://api.github.com/users/${el}`)
+//   .then(response => {
+//     console.log(response);
+//     entry.append(newCard(response));
+//   })
+//   .catch( error => {
+//     console.log('The data was not returned', error);
+//   })
+// })
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
