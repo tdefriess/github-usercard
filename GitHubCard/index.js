@@ -2,9 +2,12 @@
            (replacing the palceholder with your Github name):
            https://api.github.com/users/<your name>
 */
+const entry = document.querySelector('.cards');
+
 axios.get('https://api.github.com/users/tdefriess')
 .then(response => {
   console.log(response);
+  entry.append(newCard(response));
 })
 .catch( error => {
   console.log('The data was not returned', error);
@@ -85,7 +88,20 @@ function newCard(gitObject){
   profile.textContent = 'Profile: ';
   link.textContent = gitObject.data.html_url;
   link.src = gitObject.data.html_url;
-  followers.textContent = gitObject.data.followers;
-  following.textContent = gitObject.data.following;
+  followers.textContent = `Followers: ${gitObject.data.followers}`;
+  following.textContent = `Following: ${gitObject.data.following}`;
   bio.textContent = gitObject.data.bio;
+
+  card.append(userIMG);
+  card.append(cardInfo);
+  cardInfo.append(realName);
+  cardInfo.append(userName);
+  cardInfo.append(location);
+  profile.append(link);
+  cardInfo.append(profile);
+  cardInfo.append(followers);
+  cardInfo.append(following);
+  cardInfo.append(bio);
+
+  return card;
 }
