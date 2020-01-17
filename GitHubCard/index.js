@@ -100,12 +100,16 @@ function newCard(gitObject){
     link = document.createElement('a'),
     followers = document.createElement('p'),
     following = document.createElement('p'),
-    bio = document.createElement('p');
+    bio = document.createElement('p'),
+    calendar = document.createElement('div'),
+    button = document.createElement('button');
 
   card.classList.add('card');
   cardInfo.classList.add('card-info');
   realName.classList.add('name');
   userName.classList.add('username');
+  calendar.classList.add('calendar', 'dis-none');
+  button.classList.add('closed');
 
   userIMG.src = gitObject.data.avatar_url;
   realName.textContent = gitObject.data.name;
@@ -113,10 +117,11 @@ function newCard(gitObject){
   location.textContent = `Location: ${gitObject.data.location}`;
   profile.textContent = 'Profile: ';
   link.textContent = gitObject.data.html_url;
-  link.src = gitObject.data.html_url;
+  link.href = gitObject.data.html_url;
   followers.textContent = `Followers: ${gitObject.data.followers}`;
   following.textContent = `Following: ${gitObject.data.following}`;
   bio.textContent = gitObject.data.bio;
+  button.textContent = 'Expand';
 
   card.append(userIMG);
   card.append(cardInfo);
@@ -128,6 +133,15 @@ function newCard(gitObject){
   cardInfo.append(followers);
   cardInfo.append(following);
   cardInfo.append(bio);
+  cardInfo.append(calendar);
+  cardInfo.append(button);
+  
+  button.style.margin = '10px 0 0 0';
+
+  button.addEventListener('click', (e) => {
+    calendar.classList.toggle('dis-none');
+    GitHubCalendar(calendar, userName.textContent, {responsive: true});    
+  })  
 
   return card;
 }
